@@ -1,0 +1,56 @@
+services:
+  nginx:
+    #specify the Dockerfile location to install nginx
+    build: ./requirements/nginx
+
+    #to read the static file
+    volumes:
+      - wp_data:/var/www/html
+
+    #assign a name for this container
+    container_name: nginx
+
+    #port specification
+    ports:
+     - "443:443"
+
+    # if container crashes, we need to restart it 
+    restart: always
+
+  wordpress:
+    build: ./requirements/wordpress
+
+    volumes:
+      - wp_data:/var/www/html
+   
+    container_name: wordpress
+    restart: always
+
+  mariadb:
+    build: ./requirements/mariadb
+
+    volumes:
+      - db_data:/var/lib/mysql
+
+    container_name: mariadb
+    restart: always
+      #environment:
+      #MYSQL_ROOT_PASSWORD: root_password_here
+      #MYSQL_DATABASE: wordpress_db
+      #MYSQL_USER: wp_user
+      #MYSQL_PASSWORD: wp_password
+
+volumes:
+    wp_data:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: /home/yanzhao/data/wordpress
+    db_data:
+      driver: local
+      driver_opts:
+        type: none
+        o: bind
+        device: /home/yanzhao/data/mariadb
+ 
