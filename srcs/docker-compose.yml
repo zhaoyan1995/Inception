@@ -41,7 +41,16 @@ services:
       #MYSQL_PASSWORD: wp_password
 
 volumes:
-    wp_data:
-      name: srcs_wp_data
-    db_data:
-      name: srcs_db_data
+  db_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/yanzhao/data/mariadb'
+
+  wp_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/yanzhao/data/wordpress'
