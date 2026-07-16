@@ -25,6 +25,10 @@ services:
    
     container_name: wordpress
     restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE} 
+      MYSQL_USER: ${MYSQL_USER} 
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
   mariadb:
     build: ./requirements/mariadb
@@ -34,11 +38,13 @@ services:
 
     container_name: mariadb
     restart: always
-      #environment:
-      #MYSQL_ROOT_PASSWORD: root_password_here
-      #MYSQL_DATABASE: wordpress_db
-      #MYSQL_USER: wp_user
-      #MYSQL_PASSWORD: wp_password
+
+    #prepare for introducing the environnement variable inside .env file
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} 
+      MYSQL_DATABASE: ${MYSQL_DATABASE} 
+      MYSQL_USER: ${MYSQL_USER} 
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD} 
 
 volumes:
   db_data:
@@ -46,11 +52,11 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/home/yanzhao/data/mariadb'
+      device: '${DATA_PATH}/mariadb'
 
   wp_data:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/home/yanzhao/data/wordpress'
+      device: '${DATA_PATH}/wordpress'
