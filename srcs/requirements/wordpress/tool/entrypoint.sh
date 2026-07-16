@@ -18,5 +18,5 @@ fi
 chmod -R 777 /var/www/html
 
 # 启动 php-fpm
-exec php-fpm81 -F
+exec php-fpm8.2 -F
 
