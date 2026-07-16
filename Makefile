@@ -13,7 +13,7 @@ all:
 up: all
 
 down:
-	@docker compose -f $(SRCS) down
+	@docker compose -f $(SRCS) down -v
 
 clean: down
 
