@@ -1,21 +1,50 @@
 #!/bin/sh
 
-# 如果挂载目录里还没有 index.php（说明是第一次启动，或者是空目录）
+set -e
+
+# 1. Make sure that Mariadb is connected
+echo "check if mariadb is connected..."
+
+while ! mysqladmin ping -h"mariadb" -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" --silent; do
+	echo "Maria db is not ready yet, WordPress need to wait for 2 seconds."
+	sleep 2
+done
+echo "mariadb is connected sucessfully!"
+
+
+# 2. Downloading the WordPress source code 
 if [ ! -f /var/www/html/index.php ]; then
-    echo "WordPress 源码不存在，正在搬运中..."
-    
-    # 或者是你在 Dockerfile 里提前下载好了解压到某个临时目录，现在把它拷过来：
-    # cp -r /usr/src/wordpress/* /var/www/html/
-    
-    # 或者是在脚本里实时下载（如果容器能联网）：
-    wget https://wordpress.org/latest.tar.gz
-    tar -xzf latest.tar.gz
-    cp -r wordpress/* /var/www/html/
-    rm -rf wordpress latest.tar.gz
+    echo "WordPress source code doesn't exist, uploading now..."
+    wp core download --allow-root --path=/var/www/html
 fi
 
-# 确保搬运完后，赋予绝对权限，让 Nginx 能够读写它
-chmod -R 777 /var/www/html
+# 3. Build the wp-config.php config file
+if [ ! -f /var/www/html/wp-config.php ]; then
+	echo "creating the wp-config.php config file and bind to Mairadb DataBase"
+	wp config create \
+		--allow-root \
+		--dbname="${MYSQL_DATABASE}" \
+		--dbuser="${MYSQL_USER}" \
+		--dbpass="${MYSQL_PASSWORD}" \
+		--dbhost="mariadb:3306" \
+		--path=/var/www/html
+
+	echo "installing wordpress automatically"
+	wp core install \
+		--allow-root \
+		--url="${WP_URL}" \
+		--title="${WP_TITLE}" \
+		--admin_user="${WP_ADMIN_USER}" \
+		--admin_password="${WP_ADMIN_PASSWORD}" \
+		--admin_email="${WP_ADMIN_EMAIL}" \
+		--skip-email \
+		--path=/var/www/html
+fi
+
+echo "updating the access rule of web directory file"
+
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html
 
 # 启动 php-fpm
 exec php-fpm8.2 -F

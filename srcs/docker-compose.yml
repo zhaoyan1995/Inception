@@ -29,6 +29,12 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE} 
       MYSQL_USER: ${MYSQL_USER} 
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      WP_URL: ${WP_URL}
+      WP_TITLE: ${WP_TITLE}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+
 
   mariadb:
     build: ./requirements/mariadb
@@ -44,7 +50,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} 
       MYSQL_DATABASE: ${MYSQL_DATABASE} 
       MYSQL_USER: ${MYSQL_USER} 
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD} 
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
 volumes:
   db_data:
