@@ -29,7 +29,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 		--dbhost="mariadb:3306" \
 		--path=/var/www/html
 
-	echo "installing wordpress automatically"
+	echo "setting up the admin info account and basic info related to the website"
 	wp core install \
 		--allow-root \
 		--url="${WP_URL}" \
@@ -46,6 +46,6 @@ echo "updating the access rule of web directory file"
 chown -R www-data:www-data /var/www/html
 chmod -R 755 /var/www/html
 
-# 启动 php-fpm
+# executing php-fpm
 exec php-fpm8.2 -F
 
