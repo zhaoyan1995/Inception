@@ -1,5 +1,14 @@
 #!/bin/sh
 
+# 1. Read passwords from Docker Secrets...
+if [ -f /run/secrets/db_root_password ]; then
+    MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+fi
+
+if [ -f /run/secrets/db_password ]; then
+    MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+fi
+
 # 1. Check if system tables already exist
 if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
     echo "Database not initialized. Initializing system tables..."

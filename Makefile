@@ -2,7 +2,6 @@ NAME = inception
 SRCS = srcs/docker-compose.yml
 ENV_FILE = srcs/.env
 
-
 USER_NAME = $(shell whoami)
 DATA_DIR = /home/$(USER_NAME)/data
 
