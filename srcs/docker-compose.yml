@@ -2,13 +2,14 @@ services:
   nginx:
     #specify the Dockerfile location to install nginx
     build: ./requirements/nginx
-
+    
+    #assign a name for this image and container
+    image: nginx
+    container_name: nginx
+    
     #to read the static file
     volumes:
       - wp_data:/var/www/html
-
-    #assign a name for this container
-    container_name: nginx
 
     #port specification
     ports:
@@ -23,10 +24,12 @@ services:
   wordpress:
     build: ./requirements/wordpress
 
+    image: wordpress
+    container_name: wordpress
+
     volumes:
       - wp_data:/var/www/html
    
-    container_name: wordpress
     restart: always
 
     environment:
@@ -43,10 +46,12 @@ services:
   mariadb:
     build: ./requirements/mariadb
 
+    image: mariadb
+    container_name: mariadb
+
     volumes:
       - db_data:/var/lib/mysql
 
-    container_name: mariadb
     restart: always
 
     #prepare for introducing the environnement variable inside .env file
