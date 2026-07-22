@@ -10,11 +10,21 @@ fi
 # 2. Make sure that Mariadb is connected
 echo "check if mariadb is connected..."
 
+MAX_RETRIES=30
+RETRY_COUNT=0
+
 while ! mysqladmin ping -h"mariadb" -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" --silent; do
-	echo "Maria db is not ready yet, WordPress need to wait for 2 seconds."
-	sleep 2
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+    if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
+        echo "Error: MariaDB is still not ready after ${MAX_RETRIES} attempts (60s). Exiting."
+        exit 1
+    fi
+
+    echo "MariaDB is not ready yet, waiting 2 seconds... ($RETRY_COUNT/$MAX_RETRIES)"
+    sleep 2
 done
-echo "mariadb is connected sucessfully!"
+
+echo "MariaDB is up and running!"
 
 # 3. Downloading the WordPress source code 
 if [ ! -f /var/www/html/index.php ]; then
