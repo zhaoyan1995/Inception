@@ -13,7 +13,9 @@ The containers are lightweight, portable packages that include everything needed
 It solves the "it works on my machine" problem by packaging the application with its environment into containers that run exactly the same way on every machine.
 
 ### Architecture
-
+<p align="center">
+  <img src="./Architect.png" alt="Inception Architecture" width="1000"/>
+</p>
 
 ### Key Features
 - **Custom Docker Images**: A custom recipe to build containers tailored to specific development requirements.
@@ -126,4 +128,6 @@ make re
 
 * [Roadmap of learning Docker](https://www.youtube.com/watch?v=zFa9_K8BS8I) - Learn Docker in 2026 - Complete Roadmap Beginner to Pro
 
-### How do we use AI in our project?
+### How do I use AI in our project?
+I used AI as a learning companion to build a structured roadmap, enhancing both my theoretical knowledge and practical hands-on skills with Docker.
+Through interactive discussions with AI, I was able to break down the project into logical steps, allowing me to build each container in a logical and systematic sequence. Furthermore, I deliberately tested incorrect configurations guided by AI to observe container reactions, which helped me understand the underlying setup choices and identify bad practices to avoid.
